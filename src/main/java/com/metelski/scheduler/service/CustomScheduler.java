@@ -21,15 +21,13 @@ import static org.quartz.TriggerBuilder.newTrigger;
 public class CustomScheduler {
     @Autowired
     private CronService cronService;
-    @Autowired
-    private CronDao DAO;
-    private SchedulerFactory schedulerFactory = new StdSchedulerFactory();
-    private Scheduler scheduler = schedulerFactory.getScheduler();
+    private SchedulerFactory schedulerFactory;
+    private Scheduler scheduler;
 
-    public CustomScheduler() throws SchedulerException {
-    }
     @PostConstruct
     public void init() throws SchedulerException {
+        schedulerFactory = new StdSchedulerFactory();
+        scheduler = schedulerFactory.getScheduler();
         start();
     }
 
