@@ -15,9 +15,7 @@ public class CronDAOImpl implements CronDao{
     @Override
     public List<CronExp> getAll() {
         Query query = entityManager.createQuery("from CronExp");
-        List<CronExp> expressions = query.getResultList();
-
-        return expressions;
+        return (List<CronExp>) query.getResultList();
     }
 
     @Override

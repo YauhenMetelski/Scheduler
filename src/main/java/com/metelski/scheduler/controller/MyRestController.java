@@ -2,9 +2,9 @@ package com.metelski.scheduler.controller;
 
 import com.metelski.scheduler.entity.CronExp;
 import com.metelski.scheduler.service.CronService;
+import com.metelski.scheduler.service.CustomScheduler;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
-import org.quartz.impl.StdSchedulerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,10 +15,20 @@ import java.util.List;
 public class MyRestController {
     @Autowired
     private CronService service;
+    @Autowired
+    private CustomScheduler scheduler;
 
     @GetMapping("crons")
     public List<String> showAllCrons(){
         return service.getAllCrons();
+    }
+    @GetMapping("crons/start")
+    public void startScheduler(){
+        try {
+            scheduler.start();
+        } catch (SchedulerException e) {
+            e.printStackTrace();
+        }
     }
     @PostMapping("crons")
     public void addCron(@RequestBody String cron){
@@ -29,8 +39,8 @@ public class MyRestController {
         return service.getAllEntityes();
     }
     @PutMapping("crons/{id}")
-    public void update(@PathVariable int id){
-        service.update(id);
+    public void update(@PathVariable int id,  @RequestBody String cron){
+        service.update(id,cron);
     }
     @DeleteMapping("crons/{id}")
     public void deleteCron(@PathVariable int id){
